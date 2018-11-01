@@ -1,0 +1,67 @@
+
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+
+CREATE DATABASE IF NOT EXISTS oss
+  DEFAULT CHARACTER SET UTF8
+  COLLATE UTF8_GENERAL_CI;
+
+USE oss;
+
+-- ----------------------------
+-- Table structure for OSS_BUCKET
+-- ----------------------------
+DROP TABLE IF EXISTS `OSS_BUCKET`;
+CREATE TABLE `OSS_BUCKET` (
+  `BUCKET_ID` varchar(32) NOT NULL,
+  `BUCKET_NAME` varchar(32) DEFAULT NULL,
+  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DETAIL` varchar(256) DEFAULT NULL,
+  `CREATOR` varchar(32) NOT NULL,
+  PRIMARY KEY (`BUCKET_ID`),
+  UNIQUE KEY `AK_KEY_BUCKET_NAME` (`BUCKET_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='OSS BUCKET';
+
+-- ----------------------------
+-- Table structure for SERVICE_AUTH
+-- ----------------------------
+DROP TABLE IF EXISTS `SERVICE_AUTH`;
+CREATE TABLE `SERVICE_AUTH` (
+  `BUCKET_NAME` varchar(32) NOT NULL,
+  `TARGET_TOKEN` varchar(32) NOT NULL COMMENT '被授权对象token',
+  `AUTH_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`BUCKET_NAME`,`TARGET_TOKEN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='对象存储服务授权表';
+
+-- ----------------------------
+-- Table structure for TOKEN_INFO
+-- ----------------------------
+DROP TABLE IF EXISTS `TOKEN_INFO`;
+CREATE TABLE `TOKEN_INFO` (
+  `TOKEN` varchar(32) NOT NULL,
+  `EXPIRE_TIME` int(11) NOT NULL,
+  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `REFRESH_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ACTIVE` tinyint(4) NOT NULL,
+  `CREATOR` varchar(32) NOT NULL,
+  PRIMARY KEY (`TOKEN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='token 信息表';
+
+-- ----------------------------
+-- Table structure for USER_INFO
+-- ----------------------------
+DROP TABLE IF EXISTS `USER_INFO`;
+CREATE TABLE `USER_INFO` (
+  `USER_ID` varchar(32) NOT NULL,
+  `USER_NAME` varchar(32) NOT NULL,
+  `PASSWORD` varchar(64) NOT NULL COMMENT 'PASSWORD md5',
+  `SYSTEM_ROLE` varchar(32) NOT NULL COMMENT 'ADMIN OR USER',
+  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DETAIL` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`USER_ID`),
+  UNIQUE KEY `AK_UQ_USER_NAME` (`USER_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息';
+
+SET FOREIGN_KEY_CHECKS = 1;

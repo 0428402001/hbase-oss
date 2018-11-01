@@ -1,0 +1,8 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile fileTree(dir:'lib',include:['*.jar'])
+    compile 'org.springframework.boot:spring-boot-starter-web'
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.salmon.oss.core.authmgr.mapper.ServiceAuthMapper">
+  <resultMap id="ServiceAuthResultMap" type="com.salmon.oss.core.authmgr.model.ServiceAuth">
+    <result column="BUCKET_NAME" property="bucketName"/>
+    <result column="TARGET_TOKEN" property="targetToken"/>
+    <result column="AUTH_TIME" property="authTime"/>
+  </resultMap>
+  <insert id="addAuth">
+    insert into SERVICE_AUTH
+    (BUCKET_NAME,TARGET_TOKEN,AUTH_TIME)
+    values
+    (#{auth.bucketName},#{auth.targetToken},#{auth.authTime})
+  </insert>
+
+  <delete id="deleteAuth">
+    delete from SERVICE_AUTH
+    where BUCKET_NAME=#{bucket} AND TARGET_TOKEN=#{token}
+  </delete>
+
+  <delete id="deleteAuthByToken">
+    delete from SERVICE_AUTH
+    where TARGET_TOKEN=#{token}
+  </delete>
+
+  <delete id="deleteAuthByBucket">
+    delete from SERVICE_AUTH
+    where BUCKET_NAME=#{bucket}
+  </delete>
+
+  <select id="getAuth" resultMap="ServiceAuthResultMap">
+    select * from SERVICE_AUTH where
+    TARGET_TOKEN=#{token} AND BUCKET_NAME=#{bucket}
+  </select>
+</mapper>

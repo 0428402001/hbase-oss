@@ -1,0 +1,7 @@
+rootProject.name = 'oss'
+include 'oss-common'
+include 'oss-core'
+include 'oss-api'
+include 'oss-sdk'
+include 'oss-server'
+

@@ -1,0 +1,17 @@
+
+dependencies {
+    compile project(':oss-server')
+    //compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    //testCompile('org.springframework.security:spring-security-test')
+    compile('com.google.guava:guava:16.0.1') {
+        force = true
+    }
+    //compile 'org.springframework.boot:spring-boot-starter-aop'
+    compile('io.springfox:springfox-swagger2:2.7.0') {
+        exclude group: 'com.google.guava'
+        exclude group: 'org.slf4j'
+    }
+    compile 'io.springfox:springfox-swagger-ui:2.7.0'
+
+}

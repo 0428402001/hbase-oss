@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.salmon.oss.core.authmgr.mapper.TokenInfoMapper">
+  <resultMap id="TokenInfoResultMap" type="com.salmon.oss.core.authmgr.model.TokenInfo">
+    <id column="TOKEN" property="token"/>
+    <result column="EXPIRE_TIME" property="expireTime"/>
+    <result column="REFRESH_TIME" property="refreshTime"/>
+    <result column="ACTIVE" property="active"/>
+    <result column="CREATOR" property="creator"/>
+    <result column="CREATE_TIME" property="createTime"/>
+  </resultMap>
+  <insert id="addToken">
+    insert into TOKEN_INFO
+    (TOKEN,EXPIRE_TIME,REFRESH_TIME,ACTIVE,CREATOR,CREATE_TIME)
+    values
+    (#{token.token},#{token.expireTime},#{token.refreshTime}
+    ,#{token.active},#{token.creator},#{token.createTime})
+  </insert>
+
+  <update id="updateToken">
+    update TOKEN_INFO set EXPIRE_TIME=#{expireTime},ACTIVE=#{isActive}
+    where TOKEN=#{token}
+  </update>
+
+  <update id="refreshToken">
+    update TOKEN_INFO set REFRESH_TIME=#{refreshTime}
+    where TOKEN=#{token}
+  </update>
+
+  <delete id="deleteToken">
+    delete from TOKEN_INFO where TOKEN=#{token}
+  </delete>
+
+  <select id="getTokenInfo" resultMap="TokenInfoResultMap">
+    select * from TOKEN_INFO where TOKEN=#{token}
+  </select>
+
+  <select id="getTokenInfoByCreator" resultMap="TokenInfoResultMap">
+    select * from TOKEN_INFO where
+    CREATOR=#{creator}
+  </select>
+</mapper>

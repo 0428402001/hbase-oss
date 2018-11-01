@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.salmon.oss.core.usermgr.mapper.UserInfoMapper">
+  <resultMap id="UserInfoResultMap" type="com.salmon.oss.core.usermgr.model.UserInfo">
+    <id column="USER_ID" property="userId"/>
+    <result column="USER_NAME" property="userName"/>
+    <result column="PASSWORD" property="password"/>
+    <result column="SYSTEM_ROLE" property="systemRole"/>
+    <result column="DETAIL" property="detail"/>
+    <result column="CREATE_TIME" property="createTime"/>
+  </resultMap>
+
+  <insert id="addUser">
+    insert into USER_INFO
+    (USER_ID,USER_NAME,PASSWORD,SYSTEM_ROLE,DETAIL,CREATE_TIME)
+    values
+    (#{userInfo.userId},#{userInfo.userName},#{userInfo.password}
+    ,#{userInfo.systemRole},#{userInfo.detail},#{userInfo.createTime})
+  </insert>
+
+  <update id="updateUserInfo">
+    update USER_INFO set USER_ID=#{userId}
+    <if test="password!=null and password!='' ">
+      , PASSWORD=#{password}
+    </if>
+    <if test="detail!=null and detail!='' ">
+      , DETAIL=#{detail}
+    </if>
+    where USER_ID=#{userId}
+  </update>
+
+  <delete id="deleteUser">
+    delete from USER_INFO where USER_ID=#{userId}
+  </delete>
+
+  <select id="getUserInfo" resultMap="UserInfoResultMap">
+    select * from USER_INFO where
+    USER_ID=#{userId}
+  </select>
+
+  <select id="checkPassword" resultMap="UserInfoResultMap">
+    select * from USER_INFO
+    where PASSWORD=#{password} and USER_NAME=#{userName}
+  </select>
+
+  <select id="getUserInfoByName" resultMap="UserInfoResultMap">
+    select * from USER_INFO where
+    USER_NAME=#{userName}
+  </select>
+</mapper>

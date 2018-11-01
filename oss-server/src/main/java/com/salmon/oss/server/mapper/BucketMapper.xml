@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.salmon.oss.server.mapper.BucketMapper">
+  <resultMap id="BucketResultMap" type="com.salmon.oss.common.domain.BucketInfo">
+    <id column="BUCKET_ID" property="bucketId"/>
+    <result column="BUCKET_NAME" property="bucketName"/>
+    <result column="DETAIL" property="detail"/>
+    <result column="CREATOR" property="creator"/>
+    <result column="CREATE_TIME" property="createTime"/>
+  </resultMap>
+
+  <insert id="addBucket">
+    insert into OSS_BUCKET
+    (BUCKET_ID,BUCKET_NAME,CREATOR,DETAIL,CREATE_TIME)
+    values
+    (#{bucket.bucketId},#{bucket.bucketName},#{bucket.creator}
+    ,#{bucket.detail},#{bucket.createTime})
+  </insert>
+
+  <update id="updateBucket">
+    update OSS_BUCKET set BUCKET_NAME=#{bucketName}
+    <if test="detail!=null and detail!='' ">
+      , DETAIL=#{detail}
+    </if>
+    where BUCKET_NAME=#{bucketName}
+  </update>
+
+  <delete id="deleteBucket">
+    delete from OSS_BUCKET where BUCKET_NAME=#{bucketName}
+  </delete>
+
+  <select id="getBucket" resultMap="BucketResultMap">
+    select * from OSS_BUCKET where
+    BUCKET_ID=#{bucketId}
+  </select>
+
+  <select id="getBucketByName" resultMap="BucketResultMap">
+    select * from OSS_BUCKET where
+    BUCKET_NAME=#{bucketName}
+  </select>
+
+  <select id="getBucketByCreator" resultMap="BucketResultMap">
+    select * from OSS_BUCKET where
+    CREATOR=#{creator}
+  </select>
+
+  <select id="getUserAuthorizedBuckets" resultMap="BucketResultMap">
+    select b.* from OSS_BUCKET b,SERVICE_AUTH s where
+    s.TARGET_TOKEN=#{token} and s.BUCKET_NAME=b.BUCKET_NAME
+  </select>
+</mapper>
